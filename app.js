@@ -11,6 +11,8 @@ app.use(express.json());
 
 app.get("/api/categories", getCategories);
 
+app.get("/api/reviews/:review_id", getReviewById);
+
 app.use(handlePSQLErrors);
 
 app.use(handleCustomErrors);
