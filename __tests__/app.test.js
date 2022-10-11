@@ -60,5 +60,12 @@ describe("2. GET /api/reviews/:review_id", () => {
         });
       });
   });
-
+  test("404: returns an error message when passed correct data type but a review_id that does not exist", () => {
+    return request(app)
+      .get("/api/reviews/123456789")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.message).toBe("Review ID does not exist");
+      });
+  });
 });
