@@ -115,4 +115,12 @@ describe("3. GET /api/users", () => {
         ]);
       });
   });
+  test("404: responds with correct error status when invalid path used", () => {
+    return request(app)
+      .get("/api/users/test")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.message).toBe("Path does not exist");
+      });
+  });
 });
