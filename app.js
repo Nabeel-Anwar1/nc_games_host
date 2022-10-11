@@ -6,6 +6,7 @@ const {
   handleCustomErrors,
   handleInternalErrors,
 } = require("./controllers/errors.controller");
+const { getReviewById } = require("./controllers/reviews.controller");
 
 app.use(express.json());
 
