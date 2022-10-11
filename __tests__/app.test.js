@@ -18,6 +18,7 @@ describe("1. GET /api/categories", () => {
       .get("/api/categories")
       .expect(200)
       .then(({ body }) => {
+        expect(body.categories.length).toBe(4);
         expect(body.categories).toEqual([
           {
             slug: "euro game",
@@ -87,6 +88,7 @@ describe("3. GET /api/users", () => {
       .get("/api/users")
       .expect(200)
       .then(({ body }) => {
+        expect(body.users.length).toBe(4);
         expect(body.users).toEqual([
           {
             username: "mallionaire",
