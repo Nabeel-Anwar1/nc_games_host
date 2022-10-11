@@ -68,4 +68,12 @@ describe("2. GET /api/reviews/:review_id", () => {
         expect(body.message).toBe("Review ID does not exist");
       });
   });
+  test("400: returns an error message when passed an invalid data type", () => {
+    return request(app)
+      .get("/api/reviews/banana")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.message).toBe("Invalid ID");
+      });
+  });
 });
