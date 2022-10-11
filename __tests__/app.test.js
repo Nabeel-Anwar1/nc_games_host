@@ -18,6 +18,7 @@ describe("1. GET /api/categories", () => {
       .get("/api/categories")
       .expect(200)
       .then(({ body }) => {
+        expect(body.categories.length).toBe(4);
         expect(body.categories).toEqual([
           {
             slug: "euro game",
@@ -36,7 +37,10 @@ describe("1. GET /api/categories", () => {
       });
   });
   test("404: responds with correct error status when path not found", () => {
-    return request(app).get("/api/pizza").expect(404);
+    return request(app)
+      .get("/api/pizza")
+      .expect(404)
+      .then(({ body }) => expect(body.message).toBe("Path does not exist"));
   });
 });
 
@@ -74,6 +78,51 @@ describe("2. GET /api/reviews/:review_id", () => {
       .expect(400)
       .then(({ body }) => {
         expect(body.message).toBe("Invalid ID");
+      });
+  });
+});
+
+describe("3. GET /api/users", () => {
+  test("200: respond with an array of user objects containing the correct keys and properties", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.users.length).toBe(4);
+        expect(body.users).toEqual([
+          {
+            username: "mallionaire",
+            name: "haz",
+            avatar_url:
+              "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
+          },
+          {
+            username: "philippaclaire9",
+            name: "philippa",
+            avatar_url:
+              "https://avatars2.githubusercontent.com/u/24604688?s=460&v=4",
+          },
+          {
+            username: "bainesface",
+            name: "sarah",
+            avatar_url:
+              "https://avatars2.githubusercontent.com/u/24394918?s=400&v=4",
+          },
+          {
+            username: "dav3rid",
+            name: "dave",
+            avatar_url:
+              "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+          },
+        ]);
+      });
+  });
+  test("404: responds with correct error status when invalid path used", () => {
+    return request(app)
+      .get("/api/users/test")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.message).toBe("Path does not exist");
       });
   });
 });
