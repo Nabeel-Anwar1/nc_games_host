@@ -149,6 +149,27 @@ describe("4. PATCH /api/reviews/review_id", () => {
         });
       });
   });
+  test("200: respond with review object with votes property correctly incremented - going into negatives", () => {
+    const votes = { inc_votes: -100 };
+    return request(app)
+      .patch("/api/reviews/6")
+      .send(votes)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.review).toEqual({
+          title: "Occaecat consequat officia in quis commodo.",
+          designer: "Ollie Tabooger",
+          owner: "mallionaire",
+          review_img_url:
+            "https://images.pexels.com/photos/278918/pexels-photo-278918.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+          review_body:
+            "Fugiat fugiat enim officia laborum quis. Aliquip laboris non nulla nostrud magna exercitation in ullamco aute laborum cillum nisi sint. Culpa excepteur aute cillum minim magna fugiat culpa adipisicing eiusmod laborum ipsum fugiat quis. Mollit consectetur amet sunt ex amet tempor magna consequat dolore cillum adipisicing. Proident est sunt amet ipsum magna proident fugiat deserunt mollit officia magna ea pariatur. Ullamco proident in nostrud pariatur. Minim consequat pariatur id pariatur adipisicing.",
+          category: "social deduction",
+          created_at: new Date(1600010368077),
+          votes: -92,
+        });
+      });
+  });
   test("400: returns an error message when passed an invalid data type", () => {
     const votes = { inc_votes: "banana" };
     return request(app)

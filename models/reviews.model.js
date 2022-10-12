@@ -15,3 +15,5 @@ exports.selectReviewById = (id) => {
       }
     });
 };
+
+exports.updateReviewById = (id, inc_votes) => {};
