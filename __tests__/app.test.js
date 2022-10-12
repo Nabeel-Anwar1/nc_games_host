@@ -61,7 +61,7 @@ describe("2. GET /api/reviews/:review_id", () => {
           category: "dexterity",
           created_at: `${new Date(1610964101251)}`,
           votes: 5,
-          comment_count: 3,
+          comment_count: "3",
         });
       });
   });
