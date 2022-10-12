@@ -77,7 +77,7 @@ describe("2. GET /api/reviews/:review_id", () => {
       .get("/api/reviews/banana")
       .expect(400)
       .then(({ body }) => {
-        expect(body.message).toBe("Invalid ID");
+        expect(body.message).toBe("Invalid datatype found");
       });
   });
 });
@@ -136,6 +136,7 @@ describe("4. PATCH /api/reviews/review_id", () => {
       .expect(200)
       .then(({ body }) => {
         expect(body.review).toEqual({
+          review_id: 4,
           title: "Dolor reprehenderit",
           designer: "Gamey McGameface",
           owner: "mallionaire",
@@ -157,6 +158,7 @@ describe("4. PATCH /api/reviews/review_id", () => {
       .expect(200)
       .then(({ body }) => {
         expect(body.review).toEqual({
+          review_id: 6,
           title: "Occaecat consequat officia in quis commodo.",
           designer: "Ollie Tabooger",
           owner: "mallionaire",
@@ -165,7 +167,7 @@ describe("4. PATCH /api/reviews/review_id", () => {
           review_body:
             "Fugiat fugiat enim officia laborum quis. Aliquip laboris non nulla nostrud magna exercitation in ullamco aute laborum cillum nisi sint. Culpa excepteur aute cillum minim magna fugiat culpa adipisicing eiusmod laborum ipsum fugiat quis. Mollit consectetur amet sunt ex amet tempor magna consequat dolore cillum adipisicing. Proident est sunt amet ipsum magna proident fugiat deserunt mollit officia magna ea pariatur. Ullamco proident in nostrud pariatur. Minim consequat pariatur id pariatur adipisicing.",
           category: "social deduction",
-          created_at: new Date(1600010368077),
+          created_at: `Sun Sep 13 2020 15:19:28 GMT+0100 (British Summer Time)`,
           votes: -92,
         });
       });
@@ -177,17 +179,17 @@ describe("4. PATCH /api/reviews/review_id", () => {
       .send(votes)
       .expect(400)
       .then(({ body }) => {
-        expect(body.message).toBe("Invalid input");
+        expect(body.message).toBe("Invalid datatype found");
       });
   });
-  test("400: returns an error message when when passed correct data type but a review_id that does not exist", () => {
-    const votes = { inc_votes: 12 };
+  test("404: returns an error message when when passed correct data type but a review_id that does not exist", () => {
+    const votes = { inc_votes: 10 };
     return request(app)
       .patch("/api/reviews/10000")
       .send(votes)
-      .expect(400)
+      .expect(404)
       .then(({ body }) => {
-        expect(body.message).toBe("Invalid id");
+        expect(body.message).toBe("Review ID does not exist");
       });
   });
 });

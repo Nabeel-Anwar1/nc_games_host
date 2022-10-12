@@ -26,9 +26,9 @@ app.all("/api/*", (req, res) => {
   res.status(404).send({ message: "Path does not exist" });
 });
 
-app.use(handlePSQLErrors);
-
 app.use(handleCustomErrors);
+
+app.use(handlePSQLErrors);
 
 app.use(handleInternalErrors);
 
