@@ -126,3 +126,47 @@ describe("3. GET /api/users", () => {
       });
   });
 });
+
+describe("4. PATCH /api/reviews/review_id", () => {
+  test("200: respond with review object with votes property correctly incremented", () => {
+    const votes = { inc_votes: 10 };
+    return request(app)
+      .patch("/api/reviews/4")
+      .send(votes)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.review).toEqual({
+          title: "Dolor reprehenderit",
+          designer: "Gamey McGameface",
+          owner: "mallionaire",
+          review_img_url:
+            "https://images.pexels.com/photos/278918/pexels-photo-278918.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+          review_body:
+            "Consequat velit occaecat voluptate do. Dolor pariatur fugiat sint et proident ex do consequat est. Nisi minim laboris mollit cupidatat et adipisicing laborum do. Sint sit tempor officia pariatur duis ullamco labore ipsum nisi voluptate nulla eu veniam. Et do ad id dolore id cillum non non culpa. Cillum mollit dolor dolore excepteur aliquip. Cillum aliquip quis aute enim anim ex laborum officia. Aliqua magna elit reprehenderit Lorem elit non laboris irure qui aliquip ad proident. Qui enim mollit Lorem labore eiusmod",
+          category: "social deduction",
+          created_at: `${new Date(1611315350936)}`,
+          votes: 17,
+        });
+      });
+  });
+  test("400: returns an error message when passed an invalid data type", () => {
+    const votes = { inc_votes: "banana" };
+    return request(app)
+      .patch("/api/reviews/5")
+      .send(votes)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.message).toBe("Invalid input");
+      });
+  });
+  test("400: returns an error message when when passed correct data type but a review_id that does not exist", () => {
+    const votes = { inc_votes: 12 };
+    return request(app)
+      .patch("/api/reviews/10000")
+      .send(votes)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.message).toBe("Invalid id");
+      });
+  });
+});
