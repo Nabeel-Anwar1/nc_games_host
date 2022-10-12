@@ -29,7 +29,6 @@ exports.updateReviewById = (id, inc_votes) => {
           message: "Review ID does not exist",
         });
       } else {
-        rows[0].created_at = rows[0].created_at.toString();
         return rows[0];
       }
     });

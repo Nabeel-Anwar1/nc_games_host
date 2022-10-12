@@ -145,7 +145,7 @@ describe("4. PATCH /api/reviews/review_id", () => {
           review_body:
             "Consequat velit occaecat voluptate do. Dolor pariatur fugiat sint et proident ex do consequat est. Nisi minim laboris mollit cupidatat et adipisicing laborum do. Sint sit tempor officia pariatur duis ullamco labore ipsum nisi voluptate nulla eu veniam. Et do ad id dolore id cillum non non culpa. Cillum mollit dolor dolore excepteur aliquip. Cillum aliquip quis aute enim anim ex laborum officia. Aliqua magna elit reprehenderit Lorem elit non laboris irure qui aliquip ad proident. Qui enim mollit Lorem labore eiusmod",
           category: "social deduction",
-          created_at: `${new Date(1611315350936)}`,
+          created_at: "2021-01-22T11:35:50.936Z",
           votes: 17,
         });
       });
@@ -167,7 +167,7 @@ describe("4. PATCH /api/reviews/review_id", () => {
           review_body:
             "Fugiat fugiat enim officia laborum quis. Aliquip laboris non nulla nostrud magna exercitation in ullamco aute laborum cillum nisi sint. Culpa excepteur aute cillum minim magna fugiat culpa adipisicing eiusmod laborum ipsum fugiat quis. Mollit consectetur amet sunt ex amet tempor magna consequat dolore cillum adipisicing. Proident est sunt amet ipsum magna proident fugiat deserunt mollit officia magna ea pariatur. Ullamco proident in nostrud pariatur. Minim consequat pariatur id pariatur adipisicing.",
           category: "social deduction",
-          created_at: `Sun Sep 13 2020 15:19:28 GMT+0100 (British Summer Time)`,
+          created_at: "2020-09-13T14:19:28.077Z",
           votes: -92,
         });
       });
