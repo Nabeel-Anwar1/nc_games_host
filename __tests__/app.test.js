@@ -45,7 +45,7 @@ describe("1. GET /api/categories", () => {
 });
 
 describe("2. GET /api/reviews/:review_id", () => {
-  test("200: responds with review object containing correct keys and properties", () => {
+  test("200: responds with review object containing correct keys and properties - refactor => has comment_count too", () => {
     return request(app)
       .get("/api/reviews/2")
       .expect(200)
@@ -61,6 +61,7 @@ describe("2. GET /api/reviews/:review_id", () => {
           category: "dexterity",
           created_at: `${new Date(1610964101251)}`,
           votes: 5,
+          comment_count: "3",
         });
       });
   });
