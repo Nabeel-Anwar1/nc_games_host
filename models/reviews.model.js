@@ -36,3 +36,5 @@ exports.updateReviewById = (id, inc_votes) => {
       }
     });
 };
+
+exports.selectReviews = (query) => {};
