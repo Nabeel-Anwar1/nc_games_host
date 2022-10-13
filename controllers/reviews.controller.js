@@ -2,6 +2,7 @@ const {
   selectReviewById,
   updateReviewById,
   selectReviews,
+  selectCommentsById,
 } = require("../models/reviews.model");
 
 exports.getReviewById = (req, res, next) => {
@@ -26,4 +27,8 @@ exports.getReviews = (req, res, next) => {
       res.status(200).send({ reviews });
     })
     .catch(next);
+};
+
+exports.getCommentsById = (req, res, next) => {
+  selectCommentsById();
 };

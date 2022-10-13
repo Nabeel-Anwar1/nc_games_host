@@ -69,3 +69,5 @@ exports.selectReviews = (query) => {
     return rows;
   });
 };
+
+exports.selectCommentsById = () => {};
