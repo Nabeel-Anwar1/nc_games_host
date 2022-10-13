@@ -319,16 +319,16 @@ describe("6. GET /api/reviews/:review_id/comments", () => {
               created_at: expect.any(String),
               author: expect.any(String),
               body: expect.any(String),
-              review_id: expect.any(Number),
+              review_id: 3,
             })
           );
         });
       });
   });
-  test("404: responds with error message when review_id has no related comments and message", () => {
+  test("200: responds with an empty array when review_id has no related comments and message", () => {
     return request(app)
       .get("/api/reviews/1/comments")
-      .expect(404)
+      .expect(200)
       .then(({ body }) => {
         expect(body.message).toBe("No comments relating to this ID");
       });
@@ -338,7 +338,7 @@ describe("6. GET /api/reviews/:review_id/comments", () => {
       .get("/api/reviews/123456789/comments")
       .expect(404)
       .then(({ body }) => {
-        expect(body.message).toBe("No comments relating to this ID");
+        expect(body.message).toBe("Invalid ID");
       });
   });
   test("400: responds with correct error status when invalid datatype used", () => {

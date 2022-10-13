@@ -80,7 +80,7 @@ exports.selectCommentsById = (id) => {
       if (rows.length === 0) {
         return Promise.reject({
           status: 404,
-          message: "No comments relating to this ID",
+          message: "Invalid ID",
         });
       } else {
         return rows;
