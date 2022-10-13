@@ -351,3 +351,60 @@ describe("6. GET /api/reviews/:review_id/comments", () => {
       });
   });
 });
+
+describe("7. POST /api/reviews/:review_id/comments", () => {
+  test("201: responds with the posted comment", () => {
+    const newComment = { username: "mallionaire", body: "test12345" };
+    return request(app)
+      .post("/api/reviews/4/comments")
+      .send(newComment)
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.comment).toEqual(
+          expect.objectContaining({
+            comment_id: 7,
+            body: "test12345",
+            votes: 0,
+            author: "mallionaire",
+            review_id: 4,
+            created_at: expect.any(String),
+          })
+        );
+      });
+  });
+  test("400: responds with error message when username is not given", () => {
+    const newComment = { body: "blah" };
+    return request(app)
+      .post("/api/reviews/5/comments")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.message).toEqual("Username required");
+      });
+  });
+  test("400: responds with error message when body is not given", () => {
+    const newComment = { username: "blah" };
+    return request(app)
+      .post("/api/reviews/5/comments")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.message).toEqual("body required");
+      });
+  });
+  test("404: responds with error message when username does not exist", () => {});
+  test("404: returns an error message when passed correct data type but a review_id that does not exist", () => {
+    return request(app)
+      .post("/api/reviews/123456789/comments")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.message).toBe("Review ID does not exist");
+      });
+  });
+  test("400: responds with correct error status when invalid datatype used", () => {
+    return request(app)
+      .post("/api/reviews/test/comments")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.message).toBe("Invalid datatype found");
+      });
+  });
+});
