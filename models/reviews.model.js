@@ -70,4 +70,20 @@ exports.selectReviews = (query) => {
   });
 };
 
-exports.selectCommentsById = () => {};
+exports.selectCommentsById = (id) => {
+  return db
+    .query(
+      `select * from comments WHERE review_id = $1 ORDER BY created_at ASC`,
+      [id]
+    )
+    .then(({ rows }) => {
+      if (rows.length === 0) {
+        return Promise.reject({
+          status: 404,
+          message: "No comments relating to this ID",
+        });
+      } else {
+        return rows;
+      }
+    });
+};

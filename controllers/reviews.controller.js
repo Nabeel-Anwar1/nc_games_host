@@ -30,5 +30,9 @@ exports.getReviews = (req, res, next) => {
 };
 
 exports.getCommentsById = (req, res, next) => {
-  selectCommentsById();
+  selectCommentsById(req.params.review_id)
+    .then((comments) => {
+      res.status(200).send({ comments });
+    })
+    .catch(next);
 };
