@@ -39,6 +39,12 @@ exports.updateReviewById = (id, inc_votes) => {
 
 exports.selectReviews = (query) => {
   if (query.category === undefined) {
-    return db.query("SELECT * FROM reviews")
+    return db
+      .query(
+        "SELECT reviews.*, COUNT (comment_id) AS comment_count from reviews left join comments on reviews.review_id = comments.review_id GROUP BY reviews.review_id ORDER BY created_at DESC"
+      )
+      .then(({ rows }) => {
+        return rows;
+      });
   }
 };

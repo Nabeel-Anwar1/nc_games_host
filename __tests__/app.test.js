@@ -195,14 +195,14 @@ describe("4. PATCH /api/reviews/review_id", () => {
   });
 });
 describe("5. GET /api/reviews", () => {
-  test("200: responds with array of review objects with comment count for each review and is sorted by date in desc order when no query attached", () => {
+  test.only("200: responds with array of review objects with comment count for each review and is sorted by date in desc order when no query attached", () => {
     return request(app)
       .get("/api/reviews")
       .expect(200)
       .then(({ body }) => {
         expect(body.reviews).toBeInstanceOf(Array);
         expect(body.reviews).toHaveLength(13);
-        expect(body.reviews).toBeSortedBy("date", {
+        expect(body.reviews).toBeSortedBy("created_at", {
           descending: true,
           coerce: true,
         });
@@ -216,9 +216,9 @@ describe("5. GET /api/reviews", () => {
               review_img_url: expect.any(String),
               review_body: expect.any(String),
               category: expect.any(String),
-              create_at: expect.any(String),
+              created_at: expect.any(String),
               votes: expect.any(Number),
-              comment_count: expect.any(Number),
+              comment_count: expect.any(String),
             })
           );
         });
