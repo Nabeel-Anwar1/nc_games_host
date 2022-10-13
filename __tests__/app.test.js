@@ -330,7 +330,8 @@ describe("6. GET /api/reviews/:review_id/comments", () => {
       .get("/api/reviews/1/comments")
       .expect(200)
       .then(({ body }) => {
-        expect(body.message).toBe("No comments relating to this ID");
+        expect(body.comments).toBeInstanceOf(Array);
+        expect(body.comments).toHaveLength(0);
       });
   });
   test("404: returns an error message when passed correct data type but a review_id that does not exist", () => {
@@ -338,7 +339,7 @@ describe("6. GET /api/reviews/:review_id/comments", () => {
       .get("/api/reviews/123456789/comments")
       .expect(404)
       .then(({ body }) => {
-        expect(body.message).toBe("Invalid ID");
+        expect(body.message).toBe("Review ID does not exist");
       });
   });
   test("400: responds with correct error status when invalid datatype used", () => {
