@@ -37,4 +37,6 @@ exports.updateReviewById = (id, inc_votes) => {
     });
 };
 
-exports.selectReviews = (query) => {};
+exports.selectReviews = (query) => {
+  console.log(query);
+};
