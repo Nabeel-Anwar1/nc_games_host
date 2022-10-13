@@ -69,3 +69,14 @@ exports.selectReviews = (query) => {
     return rows;
   });
 };
+
+exports.selectCommentsById = (id) => {
+  return db
+    .query(
+      `select * from comments WHERE review_id = $1 ORDER BY created_at ASC`,
+      [id]
+    )
+    .then(({ rows }) => {
+      return rows;
+    });
+};
