@@ -11,6 +11,7 @@ const {
   patchReviewById,
   getReviews,
   getCommentsById,
+  postCommentById,
 } = require("./controllers/reviews.controller");
 const { getUsers } = require("./controllers/users.controller");
 
@@ -27,6 +28,8 @@ app.patch("/api/reviews/:review_id", patchReviewById);
 app.get("/api/reviews", getReviews);
 
 app.get("/api/reviews/:review_id/comments", getCommentsById);
+
+app.post("/api/reviews/:review_id/comments", postCommentById);
 
 app.all("/api/*", (req, res) => {
   res.status(404).send({ message: "Path does not exist" });

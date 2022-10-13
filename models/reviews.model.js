@@ -80,3 +80,5 @@ exports.selectCommentsById = (id) => {
       return rows;
     });
 };
+
+exports.insertCommentById = (id) => {};
