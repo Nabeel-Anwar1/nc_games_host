@@ -376,6 +376,7 @@ describe("7. POST /api/reviews/:review_id/comments", () => {
     const newComment = { body: "blah" };
     return request(app)
       .post("/api/reviews/5/comments")
+      .send(newComment)
       .expect(400)
       .then(({ body }) => {
         expect(body.message).toEqual("Username required");
@@ -385,23 +386,37 @@ describe("7. POST /api/reviews/:review_id/comments", () => {
     const newComment = { username: "blah" };
     return request(app)
       .post("/api/reviews/5/comments")
+      .send(newComment)
       .expect(400)
       .then(({ body }) => {
-        expect(body.message).toEqual("body required");
+        expect(body.message).toEqual("Body required");
       });
   });
-  test("404: responds with error message when username does not exist", () => {});
+  test("404: responds with error message when username does not exist", () => {
+    const newComment = { username: "blah", body: "test12345" };
+    return request(app)
+      .post("/api/reviews/5/comments")
+      .send(newComment)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.message).toEqual("Username does not exist");
+      });
+  });
   test("404: returns an error message when passed correct data type but a review_id that does not exist", () => {
+    const newComment = { username: "mallionaire", body: "test12345" };
     return request(app)
       .post("/api/reviews/123456789/comments")
+      .send(newComment)
       .expect(404)
       .then(({ body }) => {
         expect(body.message).toBe("Review ID does not exist");
       });
   });
   test("400: responds with correct error status when invalid datatype used", () => {
+    const newComment = { username: "mallionaire", body: "test12345" };
     return request(app)
       .post("/api/reviews/test/comments")
+      .send(newComment)
       .expect(400)
       .then(({ body }) => {
         expect(body.message).toBe("Invalid datatype found");
