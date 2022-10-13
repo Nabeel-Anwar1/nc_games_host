@@ -341,7 +341,7 @@ describe("6. GET /api/reviews/:review_id/comments", () => {
         expect(body.message).toBe("No comments relating to this ID");
       });
   });
-  test("400: responds with correct error status when invalid path used", () => {
+  test("400: responds with correct error status when invalid datatype used", () => {
     return request(app)
       .get("/api/reviews/test/comments")
       .expect(400)
