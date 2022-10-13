@@ -44,26 +44,28 @@ exports.selectReviews = (query) => {
     "social deduction",
     "children's games",
   ];
+  let queryString = `SELECT reviews.*, COUNT (comment_id) AS comment_count from reviews left join comments on reviews.review_id = comments.review_id`;
 
-  if (Object.keys(query).length === 0) {
-    return db
-      .query(
-        "SELECT reviews.*, COUNT (comment_id) AS comment_count from reviews left join comments on reviews.review_id = comments.review_id GROUP BY reviews.review_id ORDER BY created_at DESC"
-      )
-      .then(({ rows }) => {
-        return rows;
-      });
-  } else if (validCategories.includes(query.category)) {
-    return db
-      .query(
-        `SELECT reviews.*, COUNT (comment_id) AS comment_count from reviews left join comments on reviews.review_id = comments.review_id WHERE category = '${query.category}' GROUP BY reviews.review_id ORDER BY created_at DESC`
-      )
-      .then(({ rows }) => {
-        return rows;
-      });
-  } else if (query.category === undefined) {
-    return Promise.reject({ status: 400, message: "Query invalid" });
-  } else {
+  if (
+    !validCategories.includes(query.category) &&
+    query.category !== undefined
+  ) {
     return Promise.reject({ status: 404, message: "Category does not exist" });
   }
+  if (
+    !Object.keys(query).includes("category") &&
+    Object.keys(query).length > 0
+  ) {
+    return Promise.reject({ status: 400, message: "Query invalid" });
+  }
+
+  if (validCategories.includes(query.category)) {
+    queryString += ` WHERE category = '${query.category}'`;
+  }
+
+  queryString += ` GROUP BY reviews.review_id ORDER BY created_at DESC`;
+
+  return db.query(queryString).then(({ rows }) => {
+    return rows;
+  });
 };
