@@ -202,6 +202,10 @@ describe("5. GET /api/reviews", () => {
       .then(({ body }) => {
         expect(body.reviews).toBeInstanceOf(Array);
         expect(body.reviews).toHaveLength(13);
+        expect(body.reviews).toBeSortedBy("date", {
+          descending: true,
+          coerce: true,
+        });
         body.reviews.forEach((review) => {
           expect(review).toEqual(
             expect.objectContaining({
@@ -214,6 +218,7 @@ describe("5. GET /api/reviews", () => {
               category: expect.any(String),
               create_at: expect.any(String),
               votes: expect.any(Number),
+              comment_count: expect.any(Number),
             })
           );
         });
@@ -226,6 +231,10 @@ describe("5. GET /api/reviews", () => {
       .then(({ body }) => {
         expect(body.reviews).toBeInstanceOf(Array);
         expect(body.reviews).toHaveLength(11);
+        expect(body.reviews).toBeSortedBy("date", {
+          descending: true,
+          coerce: true,
+        });
         body.reviews.forEach((review) => {
           expect(review).toEqual(
             expect.objectContaining({
@@ -238,6 +247,7 @@ describe("5. GET /api/reviews", () => {
               category: expect("social deduction"),
               create_at: expect.any(String),
               votes: expect.any(Number),
+              comment_count: expect.any(Number),
             })
           );
         });

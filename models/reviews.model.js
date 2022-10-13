@@ -38,5 +38,7 @@ exports.updateReviewById = (id, inc_votes) => {
 };
 
 exports.selectReviews = (query) => {
-  console.log(query);
+  if (query.category === undefined) {
+    return db.query("SELECT * FROM reviews")
+  }
 };
