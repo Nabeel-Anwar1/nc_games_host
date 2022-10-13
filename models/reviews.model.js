@@ -64,6 +64,6 @@ exports.selectReviews = (query) => {
   } else if (query.category === undefined) {
     return Promise.reject({ status: 400, message: "Query invalid" });
   } else {
-    return Promise.resolve([]);
+    return Promise.reject({ status: 404, message: "Category does not exist" });
   }
 };

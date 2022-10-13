@@ -282,12 +282,12 @@ describe("5. GET /api/reviews", () => {
         });
       });
   });
-  test("200: returns an empty array when given a category with no matching reviews", () => {
+  test("404: returns an error message when given a category that doesnt exist", () => {
     return request(app)
       .get("/api/reviews?category=banana")
-      .expect(200)
+      .expect(404)
       .then(({ body }) => {
-        expect(body.reviews).toHaveLength(0);
+        expect(body.message).toBe("Category does not exist");
       });
   });
   test("400: returns an error message when passed a query that does not exist", () => {
