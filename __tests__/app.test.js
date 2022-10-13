@@ -236,7 +236,6 @@ describe("5. GET /api/reviews", () => {
           coerce: true,
         });
         body.reviews.forEach((review) => {
-          console.log(review);
           expect(review).toEqual(
             expect.objectContaining({
               review_id: expect.any(Number),
@@ -266,7 +265,6 @@ describe("5. GET /api/reviews", () => {
           coerce: true,
         });
         body.reviews.forEach((review) => {
-          console.log(review);
           expect(review).toEqual(
             expect.objectContaining({
               review_id: expect.any(Number),
@@ -284,20 +282,20 @@ describe("5. GET /api/reviews", () => {
         });
       });
   });
-  test("404: returns an error message when passed a query that does not exist", () => {
-    return request(app)
-      .get("/api/reviews?random=yes")
-      .expect(404)
-      .then(({ body }) => {
-        expect(body.message).toBe("Query invalid");
-      });
-  });
   test("200: returns an empty array when given a category with no matching reviews", () => {
     return request(app)
       .get("/api/reviews?category=banana")
       .expect(200)
       .then(({ body }) => {
         expect(body.reviews).toHaveLength(0);
+      });
+  });
+  test("400: returns an error message when passed a query that does not exist", () => {
+    return request(app)
+      .get("/api/reviews?random=yes")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.message).toBe("Query invalid");
       });
   });
 });

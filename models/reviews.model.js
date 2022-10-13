@@ -44,7 +44,8 @@ exports.selectReviews = (query) => {
     "social deduction",
     "children's games",
   ];
-  if (query.category === undefined) {
+
+  if (Object.keys(query).length === 0) {
     return db
       .query(
         "SELECT reviews.*, COUNT (comment_id) AS comment_count from reviews left join comments on reviews.review_id = comments.review_id GROUP BY reviews.review_id ORDER BY created_at DESC"
@@ -60,5 +61,9 @@ exports.selectReviews = (query) => {
       .then(({ rows }) => {
         return rows;
       });
+  } else if (query.category === undefined) {
+    return Promise.reject({ status: 400, message: "Query invalid" });
+  } else {
+    return Promise.resolve([]);
   }
 };
