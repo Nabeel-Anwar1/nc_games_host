@@ -392,14 +392,14 @@ describe("7. POST /api/reviews/:review_id/comments", () => {
         expect(body.message).toEqual("Body required");
       });
   });
-  test("404: responds with error message when username does not exist", () => {
+  test("400: responds with error message when username does not exist", () => {
     const newComment = { username: "blah", body: "test12345" };
     return request(app)
       .post("/api/reviews/5/comments")
       .send(newComment)
-      .expect(404)
+      .expect(400)
       .then(({ body }) => {
-        expect(body.message).toEqual("Username does not exist");
+        expect(body.message).toEqual("Invalid datatype found");
       });
   });
   test("404: returns an error message when passed correct data type but a review_id that does not exist", () => {
