@@ -81,4 +81,6 @@ exports.selectCommentsById = (id) => {
     });
 };
 
-exports.insertCommentById = (id) => {};
+exports.insertCommentById = (id, comment) => {
+  const { username, body } = comment;
+};

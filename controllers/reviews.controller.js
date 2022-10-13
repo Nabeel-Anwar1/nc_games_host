@@ -42,5 +42,12 @@ exports.getCommentsById = (req, res, next) => {
 };
 
 exports.postCommentById = (req, res, next) => {
-  insertCommentById(req.params.review_id);
+  selectReviewById(req.params.review_id)
+    .then(() => {
+      return insertCommentById(req.params.review_id, req.body);
+    })
+    .then((comment) => {
+      res.status(201).send({ comment });
+    })
+    .catch(next);
 };
