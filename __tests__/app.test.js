@@ -194,3 +194,69 @@ describe("4. PATCH /api/reviews/review_id", () => {
       });
   });
 });
+describe("5. GET /api/reviews", () => {
+  test("200: responds with array of review objects with comment count for each review and is sorted by date in desc order when no query attached", () => {
+    return request(app)
+      .get("/api/reviews")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.reviews).toBeInstanceOf(Array);
+        expect(body.reviews).toHaveLength(13);
+        body.reviews.forEach((review) => {
+          expect(review).toEqual(
+            expect.objectContaining({
+              review_id: expect.any(Number),
+              title: expect.any(String),
+              designer: expect.any(String),
+              owner: expect.any(String),
+              review_img_url: expect.any(String),
+              review_body: expect.any(String),
+              category: expect.any(String),
+              create_at: expect.any(String),
+              votes: expect.any(Number),
+            })
+          );
+        });
+      });
+  });
+  test("200: endpoint accepts category query, responds with array of reviews relating to category (still ordered)", () => {
+    return request(app)
+      .get("/api/reviews?category=social_deduction")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.reviews).toBeInstanceOf(Array);
+        expect(body.reviews).toHaveLength(11);
+        body.reviews.forEach((review) => {
+          expect(review).toEqual(
+            expect.objectContaining({
+              review_id: expect.any(Number),
+              title: expect.any(String),
+              designer: expect.any(String),
+              owner: expect.any(String),
+              review_img_url: expect.any(String),
+              review_body: expect.any(String),
+              category: expect("social deduction"),
+              create_at: expect.any(String),
+              votes: expect.any(Number),
+            })
+          );
+        });
+      });
+  });
+  test("404: returns an error message when passed a query that does not exist", () => {
+    return request(app)
+      .get("/api/reviews?random=yes")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.message).toBe("Query invalid");
+      });
+  });
+  test("200: returns an empty array when given a category with no matching reviews", () => {
+    return request(app)
+      .get("/api/reviews?category=banana")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.reviews).toHaveLength(0);
+      });
+  });
+});
