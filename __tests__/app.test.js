@@ -229,7 +229,6 @@ describe("5. GET /api/reviews", () => {
       .get("/api/reviews?category=social+deduction")
       .expect(200)
       .then(({ body }) => {
-        console.log(body);
         expect(body.reviews).toBeInstanceOf(Array);
         expect(body.reviews).toHaveLength(11);
         expect(body.reviews).toBeSortedBy("created_at", {
@@ -247,6 +246,36 @@ describe("5. GET /api/reviews", () => {
               review_img_url: expect.any(String),
               review_body: expect.any(String),
               category: "social deduction",
+              created_at: expect.any(String),
+              votes: expect.any(Number),
+              comment_count: expect.any(String),
+            })
+          );
+        });
+      });
+  });
+  test("200: endpoint accepts category query, responds with array of reviews relating to category (still ordered) query change", () => {
+    return request(app)
+      .get("/api/reviews?category=dexterity")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.reviews).toBeInstanceOf(Array);
+        expect(body.reviews).toHaveLength(1);
+        expect(body.reviews).toBeSortedBy("created_at", {
+          descending: true,
+          coerce: true,
+        });
+        body.reviews.forEach((review) => {
+          console.log(review);
+          expect(review).toEqual(
+            expect.objectContaining({
+              review_id: expect.any(Number),
+              title: expect.any(String),
+              designer: expect.any(String),
+              owner: expect.any(String),
+              review_img_url: expect.any(String),
+              review_body: expect.any(String),
+              category: "dexterity",
               created_at: expect.any(String),
               votes: expect.any(Number),
               comment_count: expect.any(String),
