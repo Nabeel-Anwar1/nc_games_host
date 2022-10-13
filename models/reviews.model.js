@@ -38,6 +38,13 @@ exports.updateReviewById = (id, inc_votes) => {
 };
 
 exports.selectReviews = (query) => {
+  console.log(query);
+  const validCategories = [
+    "euro game",
+    "dexterity",
+    "social deduction",
+    "children's games",
+  ];
   if (query.category === undefined) {
     return db
       .query(
@@ -46,5 +53,9 @@ exports.selectReviews = (query) => {
       .then(({ rows }) => {
         return rows;
       });
+  } else if (validCategories.includes(query.category)) {
+    return db.query(
+      `SELECT reviews.*, COUNT (comment_id) AS comment_count from reviews left join comments on reviews.review_id = comments.review_id WHERE category = ${query.category} GROUP BY reviews.review_id ORDER BY created_at DESC`
+    );
   }
 };
