@@ -14,7 +14,6 @@ exports.removeCommentById = (id) => {
       }
     })
     .then(() => {
-      console.log("ererer");
       return Promise.resolve();
     });
 };

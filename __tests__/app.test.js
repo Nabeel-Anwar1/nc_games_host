@@ -530,4 +530,12 @@ describe("9. DELETE /api/comments/:comment_id", () => {
         expect(body.message).toBe("Comment_id does not exist");
       });
   });
+  test("400: responds with correct error status when invalid datatype used", () => {
+    return request(app)
+      .delete("/api/comments/pizza")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.message).toBe("Invalid datatype found");
+      });
+  });
 });
