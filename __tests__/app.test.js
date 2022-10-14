@@ -282,12 +282,115 @@ describe("5. GET /api/reviews", () => {
         });
       });
   });
+  test("200: accepts sort_by query that defaults to date", () => {
+    return request(app)
+      .get("/api/reviews?sort_by=votes")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.reviews).toBeInstanceOf(Array);
+        expect(body.reviews).toHaveLength(13);
+        expect(body.reviews).toBeSortedBy("votes", {
+          descending: true,
+          coerce: true,
+        });
+        body.reviews.forEach((review) => {
+          expect(review).toEqual(
+            expect.objectContaining({
+              review_id: expect.any(Number),
+              title: expect.any(String),
+              designer: expect.any(String),
+              owner: expect.any(String),
+              review_img_url: expect.any(String),
+              review_body: expect.any(String),
+              category: expect.any(String),
+              created_at: expect.any(String),
+              votes: expect.any(Number),
+              comment_count: expect.any(String),
+            })
+          );
+        });
+      });
+  });
+  test("200: accepts order query (asc or desc) that defaults to descending", () => {
+    return request(app)
+      .get("/api/reviews?order=asc")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.reviews).toBeInstanceOf(Array);
+        expect(body.reviews).toHaveLength(13);
+        expect(body.reviews).toBeSortedBy("created_at", {
+          descending: false,
+          coerce: true,
+        });
+        body.reviews.forEach((review) => {
+          expect(review).toEqual(
+            expect.objectContaining({
+              review_id: expect.any(Number),
+              title: expect.any(String),
+              designer: expect.any(String),
+              owner: expect.any(String),
+              review_img_url: expect.any(String),
+              review_body: expect.any(String),
+              category: expect.any(String),
+              created_at: expect.any(String),
+              votes: expect.any(Number),
+              comment_count: expect.any(String),
+            })
+          );
+        });
+      });
+  });
+  test("200: accepts all the queries at once, category, sort_by and order", () => {
+    return request(app)
+      .get("/api/reviews?category=social+deduction&sort_by=votes&order=asc")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.reviews).toBeInstanceOf(Array);
+        expect(body.reviews).toHaveLength(11);
+        expect(body.reviews).toBeSortedBy("votes", {
+          descending: false,
+          coerce: true,
+        });
+        body.reviews.forEach((review) => {
+          expect(review).toEqual(
+            expect.objectContaining({
+              review_id: expect.any(Number),
+              title: expect.any(String),
+              designer: expect.any(String),
+              owner: expect.any(String),
+              review_img_url: expect.any(String),
+              review_body: expect.any(String),
+              category: "social deduction",
+              created_at: expect.any(String),
+              votes: expect.any(Number),
+              comment_count: expect.any(String),
+            })
+          );
+        });
+      });
+  });
   test("404: returns an error message when given a category that doesnt exist", () => {
     return request(app)
       .get("/api/reviews?category=banana")
       .expect(404)
       .then(({ body }) => {
         expect(body.message).toBe("Category does not exist");
+      });
+  });
+  test("404: returns an error message when given a sort_by that doesnt exist", () => {
+    return request(app)
+      .get("/api/reviews?sort_by=banana")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.message).toBe("Sort_by value does not exist");
+      });
+  });
+  test("404: returns an error message when given a order that doesnt exist", () => {
+    return request(app)
+      .get("/api/reviews?order=banana")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.message).toBe("Order does not exist - use asc or desc");
       });
   });
   test("400: returns an error message when passed a query that does not exist", () => {
