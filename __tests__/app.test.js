@@ -545,8 +545,7 @@ describe("10. GET /api", () => {
       .get("/api")
       .expect(200)
       .then(({ body }) => {
-        expect(body.endpoints).toBeInstanceOf(Array);
-        expect(body.endpoints).toHaveLength(8);
+        expect(body.endpoints).toBeInstanceOf(Object);
       });
   });
 });

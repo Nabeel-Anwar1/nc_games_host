@@ -1,0 +1,135 @@
+exports.selectEndpoints = () => {
+  return Promise.resolve({
+    "GET /api": {
+      description:
+        "Sends a json representation of all the available endpoints of the api",
+    },
+    "GET /api/categories": {
+      description: "Sends an array of all categories",
+      queries: [],
+      exampleResponse: {
+        categories: [
+          {
+            description: "Players attempt to uncover each other's hidden role",
+            slug: "Social deduction",
+          },
+        ],
+      },
+    },
+    "GET /api/reviews": {
+      description: "Sends an array of all reviews",
+      queries: ["category", "sort_by", "order"],
+      exampleResponse: {
+        reviews: [
+          {
+            title: "One Night Ultimate Werewolf",
+            designer: "Akihisa Okui",
+            owner: "happyamy2016",
+            review_img_url:
+              "https://images.pexels.com/photos/5350049/pexels-photo-5350049.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+            category: "hidden-roles",
+            created_at: 1610964101251,
+            votes: 5,
+          },
+        ],
+      },
+    },
+    "GET /api/reviews/:review_id": {
+      description:
+        "Sends an object containing the review relating to the review_id along with the total number of comments for the review",
+      queries: [],
+      exampleResponse: {
+        review: {
+          title: "Agricola",
+          designer: "Uwe Rosenberg",
+          owner: "mallionaire",
+          review_img_url:
+            "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+          review_body: "Farmyard fun!",
+          category: "euro game",
+          created_at: 1610964101251,
+          votes: 1,
+          comment_count: 1,
+        },
+      },
+    },
+    "GET /api/users": {
+      description: "Sends an array of all users",
+      queries: [],
+      exampleResponse: {
+        users: [
+          {
+            username: "dav3rid",
+            name: "dave",
+            avatar_url:
+              "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+          },
+        ],
+      },
+    },
+    "PATCH /api/reviews/:review_id": {
+      description:
+        "Requires new votes values, then sends an object containing the review relating to the review_id with the updated votes",
+      queries: [],
+      required: { votes: "input value" },
+      exampleResponse: {
+        review: {
+          title: "Agricola",
+          designer: "Uwe Rosenberg",
+          owner: "mallionaire",
+          review_img_url:
+            "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+          review_body: "Farmyard fun!",
+          category: "euro game",
+          created_at: 1610964101251,
+          votes: 1,
+        },
+      },
+    },
+    "GET /api/reviews/:review_id/comments": {
+      description:
+        "Sends an array containing the comments relating to the review_id",
+      queries: [],
+      exampleResponse: {
+        comment: {
+          comment_id: 6,
+          body: "Not sure about dogs, but my cat likes to get involved with board games, the boxes are their particular favourite",
+          votes: 10,
+          author: "philippaclaire9",
+          review_id: 3,
+          created_at: 1610964101251,
+        },
+      },
+    },
+    "POST /api/reviews/:review_id/comments": {
+      description:
+        "Adds a new comment to the database and sends the new comment back to the user",
+      queries: [],
+      required: { username: "input username", body: "input comment" },
+      exampleResponse: {
+        comment: {
+          comment_id: 7,
+          body: "gg go next",
+          votes: 0,
+          author: "bob",
+          review_id: 1,
+          created_at: 1610964101251,
+        },
+      },
+    },
+    "DELETE /api/comments/comment_id": {
+      description: "Deletes the comment related to the comment_id given",
+      queries: [],
+      exampleResponse: {
+        comment: {
+          comment_id: 6,
+          body: "Not sure about dogs, but my cat likes to get involved with board games, the boxes are their particular favourite",
+          votes: 10,
+          author: "philippaclaire9",
+          review_id: 3,
+          created_at: 1610964101251,
+        },
+      },
+    },
+  });
+};
