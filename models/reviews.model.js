@@ -39,12 +39,6 @@ exports.updateReviewById = (id, inc_votes) => {
 };
 
 exports.selectReviews = (query, sort_by = "created_at", order = "desc") => {
-  // const validCategories = [
-  //   "euro game",
-  //   "dexterity",
-  //   "social deduction",
-  //   "children's games",
-  // ];
   const validSortBy = [
     "review_id",
     "title",
