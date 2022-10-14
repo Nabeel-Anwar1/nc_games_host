@@ -1,3 +1,4 @@
+const { query } = require("../db/connection");
 const db = require("../db/connection");
 
 exports.selectReviewById = (id) => {
@@ -37,37 +38,55 @@ exports.updateReviewById = (id, inc_votes) => {
     });
 };
 
-exports.selectReviews = (query) => {
-  const validCategories = [
-    "euro game",
-    "dexterity",
-    "social deduction",
-    "children's games",
+exports.selectReviews = (query, sort_by = "created_at", order = "desc") => {
+  const validSortBy = [
+    "review_id",
+    "title",
+    "designer",
+    "owner",
+    "review_img_url",
+    "review_body",
+    "category",
+    "created_at",
+    "votes",
   ];
+  const validOrder = ["asc", "desc"];
   let queryString = `SELECT reviews.*, COUNT (comment_id) AS comment_count from reviews left join comments on reviews.review_id = comments.review_id`;
 
-  if (
-    !validCategories.includes(query.category) &&
-    query.category !== undefined
-  ) {
-    return Promise.reject({ status: 404, message: "Category does not exist" });
+  if (!validSortBy.includes(sort_by) && sort_by !== undefined) {
+    return Promise.reject({
+      status: 404,
+      message: "Sort_by value does not exist",
+    });
   }
-  if (
-    !Object.keys(query).includes("category") &&
-    Object.keys(query).length > 0
-  ) {
-    return Promise.reject({ status: 400, message: "Query invalid" });
-  }
-
-  if (validCategories.includes(query.category)) {
-    queryString += ` WHERE category = '${query.category}'`;
+  if (!validOrder.includes(order) && order !== undefined) {
+    return Promise.reject({
+      status: 404,
+      message: "Order does not exist - use asc or desc",
+    });
   }
 
-  queryString += ` GROUP BY reviews.review_id ORDER BY created_at DESC`;
+  if (query.category !== undefined) {
+    queryString += ` WHERE category = $1`;
+  }
 
-  return db.query(queryString).then(({ rows }) => {
-    return rows;
-  });
+  queryString += ` GROUP BY reviews.review_id ORDER BY ${sort_by} ${order}`;
+
+  if (query.category !== undefined) {
+    return db.query(queryString, [query.category]).then(({ rows }) => {
+      if (rows.length === 0) {
+        return Promise.reject({
+          status: 404,
+          message: "Category does not exist",
+        });
+      }
+      return rows;
+    });
+  } else {
+    return db.query(queryString).then(({ rows }) => {
+      return rows;
+    });
+  }
 };
 
 exports.selectCommentsById = (id) => {
