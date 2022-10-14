@@ -539,3 +539,14 @@ describe("9. DELETE /api/comments/:comment_id", () => {
       });
   });
 });
+describe("10. GET /api", () => {
+  test("200: responds with an object containing all the endpoints available", () => {
+    return request(app)
+      .get("/api")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.endpoints).toBeInstanceOf(Object);
+        expect(Object.keys(body.endpoints).length).toBe(9);
+      });
+  });
+});
