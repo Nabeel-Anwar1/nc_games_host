@@ -393,14 +393,6 @@ describe("5. GET /api/reviews", () => {
         expect(body.message).toBe("Order does not exist - use asc or desc");
       });
   });
-  // test("400: returns an error message when passed a query that does not exist", () => {
-  //   return request(app)
-  //     .get("/api/reviews?random=yes")
-  //     .expect(400)
-  //     .then(({ body }) => {
-  //       expect(body.message).toBe("Query invalid");
-  //     });
-  // });
 });
 describe("6. GET /api/reviews/:review_id/comments", () => {
   test("200: responds with array of comments related to given review_id sorted by most recent first", () => {

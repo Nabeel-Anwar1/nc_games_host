@@ -74,12 +74,6 @@ exports.selectReviews = (category, sort_by = "created_at", order = "desc") => {
     });
   }
 
-  // if (
-  //   !Object.keys(query).includes("category") && Object.keys(query).length > 0)
-  // ) {
-  //   return Promise.reject({ status: 400, message: "Query invalid" });
-  // }
-
   if (validCategories.includes(category)) {
     queryString += ` WHERE category = '${category}'`;
   }
