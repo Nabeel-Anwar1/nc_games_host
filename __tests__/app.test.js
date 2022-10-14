@@ -546,6 +546,7 @@ describe("10. GET /api", () => {
       .expect(200)
       .then(({ body }) => {
         expect(body.endpoints).toBeInstanceOf(Object);
+        expect(Object.keys(body.endpoints).length).toBe(9);
       });
   });
 });
