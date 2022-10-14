@@ -518,3 +518,24 @@ describe("7. POST /api/reviews/:review_id/comments", () => {
       });
   });
 });
+describe("9. DELETE /api/comments/:comment_id", () => {
+  test("204: return no content but deletes comment", () => {
+    return request(app).delete("/api/comments/6").expect(204);
+  });
+  test("404: Returns error message when comment_id given does not exist", () => {
+    return request(app)
+      .delete("/api/comments/10000000")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.message).toBe("Comment_id does not exist");
+      });
+  });
+  test("400: responds with correct error status when invalid datatype used", () => {
+    return request(app)
+      .delete("/api/comments/pizza")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.message).toBe("Invalid datatype found");
+      });
+  });
+});

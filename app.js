@@ -13,6 +13,7 @@ const {
   getCommentsById,
   postCommentById,
 } = require("./controllers/reviews.controller");
+const { deleteCommentById } = require("./controllers/comments.controller");
 const { getUsers } = require("./controllers/users.controller");
 
 app.use(express.json());
@@ -30,6 +31,8 @@ app.get("/api/reviews", getReviews);
 app.get("/api/reviews/:review_id/comments", getCommentsById);
 
 app.post("/api/reviews/:review_id/comments", postCommentById);
+
+app.delete("/api/comments/:comment_id", deleteCommentById);
 
 app.all("/api/*", (req, res) => {
   res.status(404).send({ message: "Path does not exist" });
