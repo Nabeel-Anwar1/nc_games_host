@@ -48,6 +48,7 @@ exports.selectReviews = (query, sort_by = "created_at", order = "desc") => {
     "category",
     "created_at",
     "votes",
+    "comment_count",
   ];
   const validOrder = ["asc", "desc"];
   let queryString = `SELECT reviews.*, COUNT (comment_id) AS comment_count from reviews left join comments on reviews.review_id = comments.review_id`;
